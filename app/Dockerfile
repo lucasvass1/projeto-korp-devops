@@ -15,6 +15,6 @@ WORKDIR /root/
 
 COPY --from=builder /app/http-server-projeto-korp .
 
-EXPOSE 8081
+EXPOSE 8080
 
 CMD ["./http-server-projeto-korp"]
