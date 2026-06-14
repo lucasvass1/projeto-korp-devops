@@ -1,0 +1,28 @@
+---
+- name: Provisionar Projeto Korp
+  hosts: local
+  become: true
+
+  roles:
+    - docker
+
+  tasks:
+
+    - name: Criar rede Docker
+      command: docker network create korp-network
+      ignore_errors: true
+
+    - name: Subir stack
+      command: docker compose up --build -d
+      args:
+        chdir: /opt/projeto-korp
+
+    - name: Validar endpoint
+      uri:
+        url: http://localhost/projeto-korp
+        return_content: true
+      register: api_response
+
+    - name: Exibir resposta
+      debug:
+        msg: "{{ api_response.content }}"
