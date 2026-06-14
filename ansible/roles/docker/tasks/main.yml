@@ -1,5 +1,5 @@
 ---
-- name: Atualizar pacotes
+- name: Atualizar cache do apt
   apt:
     update_cache: yes
 
@@ -18,7 +18,7 @@
     state: directory
     mode: '0755'
 
-- name: Adicionar chave GPG Docker
+- name: Baixar chave GPG Docker
   shell: |
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
     gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -27,19 +27,18 @@
 
 - name: Adicionar repositório Docker
   shell: |
-    echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
     https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) stable" \
     > /etc/apt/sources.list.d/docker.list
   args:
     creates: /etc/apt/sources.list.d/docker.list
 
-- name: Atualizar cache apt
+- name: Atualizar cache após adicionar repositório
   apt:
     update_cache: yes
 
-- name: Instalar Docker
+- name: Instalar Docker Engine
   apt:
     name:
       - docker-ce
@@ -54,3 +53,9 @@
     name: docker
     state: started
     enabled: yes
+
+- name: Adicionar usuário ao grupo docker
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes

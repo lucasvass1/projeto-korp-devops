@@ -1,21 +1,35 @@
 ---
 - name: Provisionar Projeto Korp
   hosts: local
+  connection: local
   become: true
+
+  vars:
+    project_path: /mnt/c/Users/lucas/projeto-korp-devops
 
   roles:
     - docker
 
   tasks:
 
+    - name: Verificar se rede existe
+      command: docker network inspect korp-network
+      register: network_check
+      failed_when: false
+      changed_when: false
+
     - name: Criar rede Docker
       command: docker network create korp-network
-      ignore_errors: true
+      when: network_check.rc != 0
 
-    - name: Subir stack
+    - name: Subir containers
       command: docker compose up --build -d
       args:
-        chdir: /opt/projeto-korp
+        chdir: "{{ project_path }}"
+
+    - name: Aguardar aplicação iniciar
+      pause:
+        seconds: 10
 
     - name: Validar endpoint
       uri:
@@ -23,6 +37,6 @@
         return_content: true
       register: api_response
 
-    - name: Exibir resposta
+    - name: Exibir resposta da API
       debug:
         msg: "{{ api_response.content }}"
