@@ -31,6 +31,16 @@ services:
     networks:
       - korp-network
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - korp-network
+
 networks:
   korp-network:
     external: true
