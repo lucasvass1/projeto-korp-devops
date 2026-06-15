@@ -247,7 +247,7 @@ Após isso, visualize as métricas no Prometheus e Grafana.
 
 ### Containers em execução
 
-Adicionar screenshot de:
+Screenshot de:
 
 ```bash
 docker ps
@@ -263,7 +263,7 @@ docs/images/docker-ps.png
 
 ### Endpoint da aplicação
 
-Adicionar screenshot de:
+Screenshot de:
 
 ```bash
 curl http://localhost/projeto-korp
@@ -279,7 +279,7 @@ docs/images/api-response.png
 
 ### Targets do Prometheus
 
-Adicionar screenshot da página:
+Screenshot da página:
 
 ```text
 http://localhost:9090/targets
@@ -297,7 +297,7 @@ docs/images/prometheus-targets.png
 
 ### Dashboard Grafana
 
-Adicionar screenshot dos gráficos e métricas.
+Screenshot dos gráficos e métricas.
 
 Imagem:
 
@@ -309,7 +309,7 @@ docs/images/grafana-dashboard.png
 
 ### Execução do Playbook Ansible
 
-Adicionar screenshot da execução:
+Screenshot da execução:
 
 ```bash
 ansible-playbook -i inventory.ini playbook.yml
