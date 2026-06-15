@@ -1,38 +1,14 @@
 # Projeto Korp DevOps Challenge
 
-## Sobre o Projeto
+## 📖 Sobre o Projeto
 
-Este projeto foi desenvolvido como solução para um desafio técnico de estágio DevOps.
+Este projeto foi desenvolvido como solução para um desafio técnico com foco em práticas de DevOps, observabilidade e automação de infraestrutura.
 
-A aplicação consiste em um servidor HTTP desenvolvido em Go, containerizado com Docker e orquestrado através do Docker Compose. A infraestrutura conta com NGINX como reverse proxy, Prometheus para coleta de métricas, Grafana para observabilidade e Ansible para automação do provisionamento do ambiente.
-
-O objetivo é demonstrar conhecimentos em desenvolvimento backend, conteinerização, monitoramento e automação de infraestrutura.
+A solução consiste em uma aplicação HTTP desenvolvida em Go, containerizada com Docker e orquestrada via Docker Compose. A infraestrutura utiliza NGINX como Reverse Proxy, Prometheus para coleta de métricas, Grafana para visualização e Ansible para automação do provisionamento.
 
 ---
 
-## Arquitetura da Solução
-
-```text
-Cliente
-   |
-   v
-NGINX (Reverse Proxy)
-   |
-   v
-Aplicação Go
-   |
-   +----> Endpoint de Métricas (/metrics)
-                |
-                v
-          Prometheus
-                |
-                v
-            Grafana
-```
-
----
-
-## Tecnologias Utilizadas
+## 🚀 Tecnologias Utilizadas
 
 * Go (Golang)
 * Docker
@@ -41,11 +17,35 @@ Aplicação Go
 * Prometheus
 * Grafana
 * Ansible
-* Ubuntu (WSL2)
+* Ubuntu / WSL2
 
 ---
 
-## Estrutura do Projeto
+## 🏗️ Arquitetura da Solução
+
+```text
+Cliente
+   │
+   ▼
+NGINX (Reverse Proxy)
+   │
+   ▼
+Aplicação Go
+   │
+   ├── /projeto-korp
+   │
+   └── /metrics
+           │
+           ▼
+      Prometheus
+           │
+           ▼
+        Grafana
+```
+
+---
+
+## 📂 Estrutura do Projeto
 
 ```text
 projeto-korp-devops/
@@ -73,17 +73,18 @@ projeto-korp-devops/
 │   └── roles/
 │       └── docker/
 │
+├── docs/
+│   └── images/
+│
 ├── docker-compose.yml
 └── README.md
 ```
 
 ---
 
-## Funcionalidades
+## ⚙️ Funcionalidades
 
-### Aplicação HTTP
-
-Endpoint principal:
+### Endpoint Principal
 
 ```http
 GET /projeto-korp
@@ -98,9 +99,7 @@ Resposta:
 }
 ```
 
-### Métricas
-
-Endpoint:
+### Endpoint de Métricas
 
 ```http
 GET /metrics
@@ -112,33 +111,22 @@ Métrica customizada:
 http_requests_total
 ```
 
-Responsável por contabilizar todas as requisições realizadas na aplicação.
+---
+
+## 🐳 Containers
+
+| Serviço        | Função                       |
+| -------------- | ---------------------------- |
+| Go Application | API principal                |
+| NGINX          | Reverse Proxy                |
+| Prometheus     | Coleta de métricas           |
+| Grafana        | Visualização e monitoramento |
 
 ---
 
-## Containers
+## ▶️ Executando o Projeto
 
-### Aplicação Go
-
-Responsável por disponibilizar a API HTTP e expor métricas Prometheus.
-
-### NGINX
-
-Atua como Reverse Proxy da aplicação.
-
-### Prometheus
-
-Realiza coleta periódica das métricas expostas pela aplicação.
-
-### Grafana
-
-Responsável pela visualização das métricas e dashboards de monitoramento.
-
----
-
-## Executando com Docker Compose
-
-### Build e inicialização
+### Subir ambiente
 
 ```bash
 docker compose up --build -d
@@ -158,33 +146,61 @@ docker compose down
 
 ---
 
-## Provisionamento com Ansible
+## 🤖 Automação com Ansible
 
-O projeto possui automação para provisionamento da infraestrutura utilizando Ansible.
-
-### Executar playbook
+Executar o provisionamento:
 
 ```bash
+cd ansible
+
 ansible-playbook -i inventory.ini playbook.yml
 ```
 
 O playbook realiza:
 
 * Verificação do Docker
+* Instalação do Docker (via role)
 * Criação da rede Docker
 * Build da aplicação
-* Subida dos containers
-* Validação da API
-* Exibição da resposta do endpoint
+* Inicialização dos containers
+* Validação automática da API
 
 ---
 
-## Endpoints Disponíveis
+## 📊 Observabilidade
+
+### Prometheus
+
+Disponível em:
+
+```text
+http://localhost:9090
+```
+
+### Grafana
+
+Disponível em:
+
+```text
+http://localhost:3000
+```
+
+Datasource Prometheus provisionado automaticamente.
+
+---
+
+## 🔗 Endpoints
 
 ### API
 
 ```text
 http://localhost/projeto-korp
+```
+
+### Métricas
+
+```text
+http://localhost/metrics
 ```
 
 ### Prometheus
@@ -201,57 +217,7 @@ http://localhost:3000
 
 ---
 
-## Monitoramento
-
-O Prometheus realiza o scrape das métricas da aplicação.
-
-Exemplo de métrica:
-
-```text
-http_requests_total
-```
-
-No Grafana é possível visualizar:
-
-* Total de requisições
-* Taxa de requisições por segundo
-* Evolução temporal das métricas
-
----
-
-## Requisitos Atendidos
-
-### Parte 1 — Serviço e Infraestrutura
-
-* Servidor HTTP em Go
-* Endpoint `/projeto-korp`
-* Retorno em JSON
-* Dockerização da aplicação
-* Docker Compose
-* Reverse Proxy com NGINX
-
-### Parte 2 — Observabilidade
-
-* Endpoint `/metrics`
-* Integração com Prometheus
-* Coleta de métricas customizadas
-* Dashboard Grafana
-
-### Parte 3 — Automação
-
-* Provisionamento via Ansible
-* Criação de rede Docker
-* Inicialização automatizada do ambiente
-* Validação automática da aplicação
-
-### Bônus
-
-* Provisionamento automático de datasource Grafana
-* Estrutura preparada para provisionamento automático de dashboards
-
----
-
-## Como Testar
+## 🧪 Como Testar
 
 ### Validar API
 
@@ -259,13 +225,13 @@ No Grafana é possível visualizar:
 curl http://localhost/projeto-korp
 ```
 
-### Validar métricas
+### Validar Métricas
 
 ```bash
 curl http://localhost/metrics
 ```
 
-### Gerar tráfego
+### Gerar Requisições
 
 ```bash
 for i in {1..20}; do
@@ -273,14 +239,133 @@ for i in {1..20}; do
 done
 ```
 
-Após gerar tráfego, acessar Grafana para visualizar as métricas.
+Após isso, visualize as métricas no Prometheus e Grafana.
 
 ---
 
-## Autor
+## 📸 Evidências da Execução
+
+### Containers em execução
+
+Adicionar screenshot de:
+
+```bash
+docker ps
+```
+
+Imagem:
+
+```text
+docs/images/docker-ps.png
+```
+
+---
+
+### Endpoint da aplicação
+
+Adicionar screenshot de:
+
+```bash
+curl http://localhost/projeto-korp
+```
+
+Imagem:
+
+```text
+docs/images/api-response.png
+```
+
+---
+
+### Targets do Prometheus
+
+Adicionar screenshot da página:
+
+```text
+http://localhost:9090/targets
+```
+
+Com o target da aplicação em estado **UP**.
+
+Imagem:
+
+```text
+docs/images/prometheus-targets.png
+```
+
+---
+
+### Dashboard Grafana
+
+Adicionar screenshot dos gráficos e métricas.
+
+Imagem:
+
+```text
+docs/images/grafana-dashboard.png
+```
+
+---
+
+### Execução do Playbook Ansible
+
+Adicionar screenshot da execução:
+
+```bash
+ansible-playbook -i inventory.ini playbook.yml
+```
+
+Mostrando o resultado final:
+
+```text
+PLAY RECAP
+```
+
+Imagem:
+
+```text
+docs/images/ansible-playbook.png
+```
+
+---
+
+## ✅ Requisitos Atendidos
+
+### Serviço e Infraestrutura
+
+* [x] Servidor HTTP em Go
+* [x] Endpoint `/projeto-korp`
+* [x] Resposta JSON
+* [x] Dockerização da aplicação
+* [x] Docker Compose
+* [x] Reverse Proxy com NGINX
+
+### Observabilidade
+
+* [x] Endpoint `/metrics`
+* [x] Métrica customizada `http_requests_total`
+* [x] Integração com Prometheus
+* [x] Integração com Grafana
+
+### Automação
+
+* [x] Provisionamento com Ansible
+* [x] Instalação do Docker via Ansible
+* [x] Criação automática da rede Docker
+* [x] Inicialização dos containers
+* [x] Validação automática da aplicação
+
+### Bônus
+
+* [x] Datasource Prometheus provisionado automaticamente
+* [x] Estrutura preparada para provisionamento de dashboards Grafana
+
+---
+
+## 👨‍💻 Autor
 
 Lucas Vasconcelos
 
 Desenvolvedor Full Stack | React | Node.js | TypeScript | AWS
 
-Projeto desenvolvido para fins de avaliação técnica e demonstração de conhecimentos em DevOps, automação e observabilidade.
+Projeto desenvolvido como solução para desafio técnico DevOps, demonstrando conhecimentos em automação, conteinerização, observabilidade e infraestrutura.
